@@ -6,9 +6,15 @@
 void print_bytes (int *bytes, int s, int t) {
   int i;
   for (i = s; i < t; i++) {
-    printf ("%3d ", bytes[i]);
+    printf ("%4d", bytes[i]);
   }
   printf ("\n");
+}
+
+void print_one_column(int *bytes) {
+  int i;
+  for (i = 0; i < 255; i++)
+    printf ("%4d:%8d\n", i, bytes[i]);
 }
 
 void print_divided (int *bytes, int parts) {
@@ -54,6 +60,7 @@ int main (int argc, char **args) {
 
   fclose(fp);
 
-  //print_divided (bytes, 8);
-  print_single (bytes);
+  print_one_column(bytes);
+  print_divided (bytes, 8);
+  //print_single (bytes);
 }
