@@ -17,6 +17,21 @@ void print_one_column(int *bytes) {
     printf ("%4d:%8d\n", i, bytes[i]);
 }
 
+void print_one_column_latin1(int *bytes) {
+  int i;
+  for (i = 0; i < 255; i++)
+    printf ("%4d  %4x: %8d %c\n", i, i, bytes[i], printable(i));
+}
+
+int printable(int i) {
+  if (i > 31 && i < 127)
+    return i;
+  else if (i > 160 && i < 256)
+    return i;
+  else
+    return 32;
+}
+
 void print_divided (int *bytes, int parts) {
   int p = 256 / parts;
   int i = 0;
@@ -60,7 +75,8 @@ int main (int argc, char **args) {
 
   fclose(fp);
 
-  print_one_column(bytes);
+  //print_one_column(bytes);
+  print_one_column_latin1(bytes);
   print_divided (bytes, 8);
   //print_single (bytes);
 }
