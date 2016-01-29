@@ -1,5 +1,7 @@
+#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define BUF_LEN 4096
 
@@ -17,16 +19,43 @@ void print_one_column(int *bytes) {
     printf ("%4d:%8d\n", i, bytes[i]);
 }
 
-void print_one_column_latin1(int *bytes) {
-  int i;
-  for (i = 0; i < 255; i++)
-    printf ("%4d  %4x: %8d %c\n", i, i, bytes[i], printable(i));
+/* void print_one_column_latin1(int *bytes) { */
+/*   int i; */
+/*   for (i = 0; i < 255; i++) */
+/*     printf ("%4d  %4x: %8d %c\n", i, i, bytes[i], to_printable_latin1(i)); */
+/* } */
+
+void to_printable_latin1(int i, unsigned char *utf) {
+  if (i > 31 && i < 127) {
+    utf[0] = i;
+  } else if (i > 160 && i < 256) {
+    ((int*)utf)[0] = i & (0x3f + 0x80);
+  } else {
+    utf[0] = 32;
+  }
 }
 
-int printable(int i) {
+void print_columns_latin1(int *bytes) {
+  int i;
+  unsigned char utf[16];
+  memset(utf, 0, 16);
+  for (i = 0; i < 255; i++) {
+    to_printable_latin1(i, utf);
+    printf("%4d  %4x: %8d %s\n", i, i, bytes[i], utf);
+  }
+}
+
+int printable_latin1(int i) {
   if (i > 31 && i < 127)
     return i;
   else if (i > 160 && i < 256)
+    return i;
+  else
+    return 32;
+}
+
+int printable(int i) {
+  if (isprint(i))
     return i;
   else
     return 32;
@@ -51,7 +80,6 @@ int main (int argc, char **args) {
   unsigned char buffer[BUF_LEN];
   int bytes_read = 0;
   FILE *fp;
-  unsigned char byte;
   int i;
 
   for (i = 0; i < 256; i++)
@@ -76,7 +104,18 @@ int main (int argc, char **args) {
   fclose(fp);
 
   //print_one_column(bytes);
-  print_one_column_latin1(bytes);
+  //  print_one_column_latin1(bytes);
+  print_columns_latin1(bytes);
   print_divided (bytes, 8);
   //print_single (bytes);
+
+  unsigned char str[] = "fooö";
+  to_printable_latin1(197, str);
+  printf("\n%s\n", str);
+
+  for (i = 0; i < 6; i++) {
+    printf("(i:%d) -> '%c':%d\n", i, str[i], str[i]);
+  }
+
+  return 0;
 }
