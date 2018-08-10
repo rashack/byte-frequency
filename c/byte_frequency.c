@@ -15,13 +15,13 @@ void print_bytes (int *bytes, int s, int t) {
 
 void print_one_column(int *bytes) {
   int i;
-  for (i = 0; i < 255; i++)
+  for (i = 0; i < 256; i++)
     printf ("%4d:%8d\n", i, bytes[i]);
 }
 
 /* void print_one_column_latin1(int *bytes) { */
 /*   int i; */
-/*   for (i = 0; i < 255; i++) */
+/*   for (i = 0; i < 256; i++) */
 /*     printf ("%4d  %4x: %8d %c\n", i, i, bytes[i], to_printable_latin1(i)); */
 /* } */
 
@@ -39,7 +39,7 @@ void print_columns_latin1(int *bytes) {
   int i;
   unsigned char utf[16];
   memset(utf, 0, 16);
-  for (i = 0; i < 255; i++) {
+  for (i = 0; i < 256; i++) {
     to_printable_latin1(i, utf);
     printf("%4d  %4x: %8d %s\n", i, i, bytes[i], utf);
   }
@@ -70,7 +70,7 @@ void print_divided (int *bytes, int parts) {
 
 void print_single (int *bytes) {
   int i;
-  for (i = 0; i < 255; i++)
+  for (i = 0; i < 256; i++)
     printf ("%d ", bytes[i]);
   printf ("%d\n", bytes[i]);
 }

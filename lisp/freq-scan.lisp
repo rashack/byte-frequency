@@ -1,8 +1,7 @@
 
 ;; (proclaim '(optimize (speed 3) (space 0) (debug 0) (safety 0)))
 
-;(time (write-freq-table (freq-scan "/home/kjell/gnuplot/filter/1/ColumnFamilyClicks-f-7184-Filter.db")
-;                        "/tmp/freq-table-lisp"))
+;; (time (write-freq-table (freq-scan "~/.emacs") "/tmp/freq-table-lisp"))
 
 (defmacro do-while (test &body body)
   body
